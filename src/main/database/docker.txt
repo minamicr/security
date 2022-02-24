@@ -1,0 +1,8 @@
+Para criar container sqlserver no docker, executar comando abaixo no POWERSHELL:
+docker run --name sqlserver -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Admin12345' -e 'DATASOURCE_PASSWORD=Admin12345' -e 'DATASOURCE_URL=jdbc:sqlserver://localhost:1433;databaseName=teste' -e 'DATASOURCE_USERNAME=sa' -p 3600:1433 -d mcr.microsoft.com/mssql/server
+
+Para iniciar container:
+docker container start sqlserver
+
+Após subir o banco:
+iniciar dbeaver, conectar banco na porta 3600 e executar script.sql para criar eazybank e tabela users
