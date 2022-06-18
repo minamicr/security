@@ -1,9 +1,11 @@
 package com.cdm.security.config;
 
+import com.cdm.security.model.Authority;
 import com.cdm.security.model.Customer;
 import com.cdm.security.repository.CustomerRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,13 +36,22 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
       if (passwordEncoder.matches(pwd, customer.getPwd())){
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority((customer.getRole())));
-        return new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+        return new UsernamePasswordAuthenticationToken(username, pwd
+            , getGrantedAuthorities(customer.getAuthorities()));
       } else {
         throw new BadCredentialsException("Invalid password");
       }
     } else {
       throw new BadCredentialsException("No user registered with this details");
     }
+  }
+
+  private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities){
+    List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    for (Authority authority : authorities){
+      grantedAuthorities.add(new SimpleGrantedAuthority((authority.getName())));
+    }
+    return grantedAuthorities;
   }
 
   @Override

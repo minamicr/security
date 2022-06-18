@@ -180,4 +180,21 @@ CREATE TABLE contact_messages (
   PRIMARY KEY (contact_id)
 );
 
+DROP TABLE authorities;
 
+CREATE TABLE authorities (
+  id int NOT NULL IDENTITY(1,1),
+  customer_id int NOT NULL,
+  name varchar(50) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT authorities_ibfk_1 FOREIGN KEY (customer_id) REFERENCES customer (customer_id)
+);
+
+INSERT INTO authorities (customer_id, name)
+ VALUES (3, 'READ');
+
+INSERT INTO authorities (customer_id, name)
+ VALUES (3, 'WRITE');
+
+ update authorities set name = 'ROLE_USER' where id = 1;
+ update authorities set name = 'ROLE_ADMIN' where id = 3;
